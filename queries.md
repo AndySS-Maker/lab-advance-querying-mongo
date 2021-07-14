@@ -22,7 +22,10 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 4. All the companies that had a Valuation Amount of more than 100.000.000 and have been founded before 2010. Retrieve only the `name` and `ipo` fields.
-
+db.companies.find(
+  {$and: [{ 'acquisition.price_amount': { $gte: 100000000 }},{ founded_year: { $lt: 2010 }},{ ipo: { $ne: null }}]},
+  {name: 1,ipo: 1,_id: 0}
+)
 <!-- Your Code Goes Here -->
 
 ### 5. All the companies that have less than 1000 employees and have been founded before 2005. Order them by the number of employees and limit the search to 10 companies.
@@ -32,7 +35,9 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 6. All the companies that don't include the `partners` field.
-
+db.companies.find(
+  {partners: {$eq: []}}
+)
 <!-- Your Code Goes Here -->
 
 ### 7. All the companies that have a null type of value on the `category_code` field.
@@ -67,11 +72,16 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 12. All the companies founded before 2000 that have an acquisition amount of more than 10.000.000
-
+db.companies.find(
+  {$and: [{ 'acquisition.price_amount': { $gte: 10000000 }},{ founded_year: { $lt: 2000 }}]}
+)
 <!-- Your Code Goes Here -->
 
 ### 13. All the companies that have been acquired after 2010, order by the acquisition amount, and retrieve only their `name` and `acquisition` field.
-
+db.companies.find(
+  {$and: [{ 'acquisition.acquired_year': { $gte: 2010 }},{ 'acquisition.price_amount': { $ne: null }}]},
+  {name: 1,acquisition: 1,_id: 0}
+)
 <!-- Your Code Goes Here -->
 
 ### 14. Order the companies by their `founded year`, retrieving only their `name` and `founded year`.
@@ -82,7 +92,9 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 15. All the companies that have been founded on the first seven days of the month, including the seventh. Sort them by their `acquisition price` in a descending order. Limit the search to 10 documents.
-
+db.companies.find(
+  {$and: [{ founded_day: { $gte: 1 }},{ founded_day: { $lte: 7 }},{ acquisition: { $ne: null }},{ 'acquisition.price_amount': { $ne: null }}]}
+).limit(10)
 <!-- Your Code Goes Here -->
 
 ### 16. All the companies on the 'web' `category` that have more than 4000 employees. Sort them by the amount of employees in ascending order.
@@ -92,7 +104,9 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 17. All the companies whose acquisition amount is more than 10.000.000, and currency is 'EUR'.
-
+db.companies.find(
+  {$and: [{ 'acquisition.price_amount': { $gt: 10000000 }},{ 'acquisition.price_amount': { $gt: 10000000 }},{ acquisition: { $ne: null }},{ 'acquisition.price_currency_code': { $eq: 'EUR' }}]}
+).limit(10)
 <!-- Your Code Goes Here -->
 
 ### 18. All the companies that have been acquired on the first trimester of the year. Limit the search to 10 companies, and retrieve only their `name` and `acquisition` fields.
@@ -103,5 +117,7 @@ db.companies.find(
 <!-- Your Code Goes Here -->
 
 ### 19. All the companies that have been founded between 2000 and 2010, but have not been acquired before 2011.
-
+db.companies.find(
+  {$and: [{ founded_year: { $gt: 2000 }},{ founded_year: { $lt: 2010 }},{ 'acquisition.acquired_year': { $lt: 2011 }}]}
+)
 <!-- Your Code Goes Here -->
